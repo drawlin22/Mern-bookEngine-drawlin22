@@ -31,11 +31,18 @@ const resolvers = {
           },
    
     Mutation: {
-        login: async (parent, args) => {
-            // Call the login function here
-            const user = await login(args);
-            return user;
-        },
+        login: async (parent, { email, password }) => {
+            const user = await User.findOne({ email });
+            if (!user) {
+              throw new AuthenticationError('No user found with this email address');
+            }
+            const correctPw = await user.isCorrectPassword(password);
+            if (!correctPw) {
+              throw new AuthenticationError('Incorrect credentials');
+            }
+            const token = signToken(user);
+            return { token, user };
+          },
         addUser: async (parent, args) => {
           try {
             const user = await User.create(args);
