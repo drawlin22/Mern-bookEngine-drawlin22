@@ -37,10 +37,13 @@ const resolvers = {
             return user;
         },
         addUser: async (parent, args) => {
-            // Call the createUser function here
-            const user = await createUser(args);
+          try {
+            const user = await User.create(args);
             return user;
-        },
+          } catch (err) {
+            throw new Error('Failed to create user: ' + err.message);
+          }
+         },
         saveBook: async (parent, args) => {
             // Call the saveBook function here
             const user = await saveBook(args);
