@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
 const { ApolloServer } = require('apollo-server-express');
-const { expressMiddleware} = require('apollo-server-express4');
+const { expressMiddleware} = require('apollo-server-express');
 
 const { typeDefs, resolvers } = require('./schemas');
 
@@ -18,11 +18,13 @@ const server = new ApolloServer({
 const startApolloServer = async () => {
   await server.start();
 
+  server.applyMiddleware({ app, path: '/graphql' });
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/graphql', expressMiddleware(server));
+// app.use('/graphql', expressMiddleware(server));
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {

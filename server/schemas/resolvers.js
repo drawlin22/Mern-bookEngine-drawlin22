@@ -1,4 +1,5 @@
 const {User, Book} = require('../models');
+const { withAuth } = require('../utils/auth');
 
 const resolvers = {
     Query: {
