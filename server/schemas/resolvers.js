@@ -1,6 +1,10 @@
 const {User, Book} = require('../models');
 const { withAuth } = require('../utils/auth');
 
+// import { Jwt } from 'jsonwebtoken';
+// import {jwt} from '../utils/auth'
+const {jwt} = require('jsonwebtoken')
+
 const resolvers = {
     Query: {
         me: async (parent, args, context, info) => {
@@ -40,7 +44,7 @@ const resolvers = {
             if (!correctPw) {
               throw new AuthenticationError('Incorrect credentials');
             }
-            const token = signToken(user);
+            const token = generateToken(user);
             return { token, user };
           },
         addUser: async (parent, args) => {
@@ -53,12 +57,12 @@ const resolvers = {
          },
         saveBook: async (parent, args) => {
             // Call the saveBook function here
-            const user = await saveBook(args);
+            const user = await User.findOneAndUpdate(args);
             return user;
         },
         removeBook: async (parent, args) => {
             // Call the deleteBook function here
-            const user = await deleteBook(args);
+            const user = await User.findOneAndUpdate(args);
             return user;
         },
      },
