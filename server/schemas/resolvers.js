@@ -49,7 +49,8 @@ const resolvers = {
         addUser: async (parent, args) => {
           try {
             const user = await User.create(args);
-            return user;
+            const token = signToken(user);
+            return {token,user};
           } catch (err) {
             throw new Error('Failed to create user: ' + err.message);
           }
