@@ -1,9 +1,8 @@
 const {User, Book} = require('../models');
 const { withAuth } = require('../utils/auth');
+const {signToken} = require('../utils/auth');
 
-// import { Jwt } from 'jsonwebtoken';
-// import {jwt} from '../utils/auth'
-const {jwt} = require('jsonwebtoken')
+const {jwt, sign} = require('jsonwebtoken')
 
 const resolvers = {
     Query: {
@@ -44,7 +43,7 @@ const resolvers = {
             if (!correctPw) {
               throw new AuthenticationError('Incorrect credentials');
             }
-            const token = generateToken(user);
+            const token = signToken(user);
             return { token, user };
           },
         addUser: async (parent, args) => {
