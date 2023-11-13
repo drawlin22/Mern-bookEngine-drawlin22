@@ -1,5 +1,6 @@
 const {User, Book} = require('../models');
 // const { withAuth } = require('../utils/auth');
+const { AuthenticationError } = require('apollo-server-express');
 const {signToken} = require('../utils/auth');
 
 // const {jwt, sign} = require('jsonwebtoken')
@@ -56,15 +57,28 @@ const resolvers = {
             throw new Error('Failed to create user: ' + err.message);
           }
          },
-        saveBook: async (parent, args) => {
+        saveBook: async (parent, {bookData}, context) => {
+          if (context.user) {
             // Call the saveBook function here
-            const user = await User.findOneAndUpdate(args);
-            return user;
+            const updatedUser = await User.findOneAndUpdate(
+              { _id: context.user._id }, 
+              {$push: {savedBooks: bookData}},
+              { new: true } 
+              );
+            return updatedUser;
+          }
+          throw new AuthenticationError('Not authenticated');
         },
-        removeBook: async (parent, args) => {
+        removeBook: async (parent, {bookData}, context) => {
+          if (context.user) {
             // Call the deleteBook function here
-            const user = await User.findOneAndUpdate(args);
+            const user = await User.findOneAndUpdate(
+              { _id: context.user._id },
+              { $pull: { savedBooks: { bookId: bookData.bookId } } },
+              { new: true }
+            );
             return user;
+          }
         },
      },
      

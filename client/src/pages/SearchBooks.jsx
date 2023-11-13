@@ -77,8 +77,8 @@ const SearchBooks = () => {
     }
 
     try {
-      const {data} = await saveBook(SAVE_BOOK, {
-        variables: { input: bookToSave },
+      const {data} = await saveBook({
+        variables: { ...bookToSave },
       });
 
       // if (!response.ok) {
@@ -88,10 +88,12 @@ const SearchBooks = () => {
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
-      console.error(err);
+      if (error && error.message === 'Not Authentiated') {
+        console.log('Not Authenticated')
+      }
     }
   };
-
+  
   return (
     <>
       <div className="text-light bg-dark p-5">
