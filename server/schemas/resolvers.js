@@ -57,18 +57,15 @@ const resolvers = {
             throw new Error('Failed to create user: ' + err.message);
           }
          },
-        saveBook: async (parent, {bookData}, context) => {
-          if (context.user) {
-            // Call the saveBook function here
-            const updatedUser = await User.findOneAndUpdate(
-              { _id: context.user._id }, 
-              {$push: {savedBooks: bookData}},
-              { new: true } 
-              );
-            return updatedUser;
-          }
-          throw new AuthenticationError('Not authenticated');
-        },
+       
+        saveBook: async (parent, args) => {
+          const user = await User.findOneAndUpdate(
+              {username: args.username},
+              {$addToSet: {savedBooks: args}},
+              {new: true, runValidators: true}
+          );
+          return user;
+      },
         removeBook: async (parent, {bookData}, context) => {
           if (context.user) {
             // Call the deleteBook function here
