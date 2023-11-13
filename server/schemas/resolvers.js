@@ -66,19 +66,16 @@ const resolvers = {
           );
           return user;
       },
-        removeBook: async (parent, {bookData}, context) => {
-          if (context.user) {
-            // Call the deleteBook function here
-            const user = await User.findOneAndUpdate(
-              { _id: context.user._id },
-              { $pull: { savedBooks: { bookId: bookData.bookId } } },
-              { new: true }
-            );
-            return user;
-          }
+      removeBook: async (parent, args) => {
+        const user = await User.findOneAndUpdate(
+            {username: args.username},
+            {$pull: {savedBooks: {bookId: args.bookId}}},
+            {new: true}
+        );
+        return user;
+          },
         },
-     },
      
-}
+};
 
 module.exports = resolvers;
