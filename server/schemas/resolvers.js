@@ -1,8 +1,8 @@
 const {User, Book} = require('../models');
-const { withAuth } = require('../utils/auth');
+// const { withAuth } = require('../utils/auth');
 const {signToken} = require('../utils/auth');
 
-const {jwt, sign} = require('jsonwebtoken')
+// const {jwt, sign} = require('jsonwebtoken')
 
 const resolvers = {
     Query: {
@@ -21,11 +21,12 @@ const resolvers = {
           user: async (parent, { username }) => {
             // Fetch a user by username from the database
             return await User.findOne({ username });
-          },
+          }, 
           books: async (parent, { username }) => {
             // Fetch books by username from the database
             const user = await User.findOne({ username });
             return user.savedBooks;
+            
           },
           book: async (parent, { bookId }) => {
             // Fetch a book by bookId from the database
