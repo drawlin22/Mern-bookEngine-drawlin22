@@ -44,6 +44,10 @@ class AuthService {
     // this will reload the page and reset the state of the application
     window.location.assign('/');
   }
+
 }
+
+// const authService = new AuthService();
+
 
 export default new AuthService();

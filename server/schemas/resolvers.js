@@ -58,9 +58,10 @@ const resolvers = {
           }
          },
        
-        saveBook: async (parent, args) => {
+        saveBook: async (parent, args, context) => {
+          console.log(context.user, "Resolver 62")
           const user = await User.findOneAndUpdate(
-              {username: args.username},
+              {_id: context.user._id},
               {$addToSet: {savedBooks: args}},
               {new: true, runValidators: true}
           );
@@ -72,7 +73,7 @@ const resolvers = {
             {$pull: {savedBooks: {bookId: args.bookId}}},
             {new: true}
         );
-        return user;
+        // return user;
           },
         },
      
