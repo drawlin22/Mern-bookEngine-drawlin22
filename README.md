@@ -22,7 +22,7 @@ To install clone the repository. Run Node command npm i to install dependencies.
 ![Book Search](image.png)
 
 
-Link to deployed application: 
+Link to deployed application: https://mern-books-drawlin22-a0868dbc6371.herokuapp.com/
 
 
 # License
@@ -41,4 +41,4 @@ Additional Resources:
 
 Phind.com
 
-askBCS learning assistants Mia, Joem, Drew, Shane
+askBCS learning assistants Mia, Joem, Shane
