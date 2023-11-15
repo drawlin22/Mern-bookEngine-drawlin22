@@ -9,7 +9,7 @@ const resolvers = {
     Query: {
         me: async (parent, args, context, info) => {
             // If there's a user in the context, return the data for that user
-            const currentUser = context.currentUser;
+            const currentUser = context.user;
             if (!currentUser) {
               throw new Error('Not authenticated');
             }
