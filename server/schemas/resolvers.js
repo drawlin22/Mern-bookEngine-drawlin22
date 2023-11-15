@@ -1,23 +1,12 @@
 const {User, Book} = require('../models');
-// const { withAuth } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 const {signToken} = require('../utils/auth');
 
-// const {jwt, sign} = require('jsonwebtoken')
-
 const resolvers = {
     Query: {
-        // me: async (parent, args, context, info) => {
-        //     // If there's a user in the context, return the data for that user
-        //     const currentUser = context.user;
-        //     if (!currentUser) {
-        //       throw new Error('Not authenticated');
-        //     }
-        //     return currentUser;
-        //   },
+      
         me: async (parent, args, context, info) => {
           // If there's a user in the context, return the data for that user
-          console.log('yo', context.user);
           const currentUser = context.user;
           if (!currentUser) {
             throw new Error('Not authenticated');

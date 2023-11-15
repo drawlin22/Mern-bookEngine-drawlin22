@@ -6,7 +6,7 @@ import { ADD_USER} from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
-const SignupForm = () => {
+const SignupForm = () => { /* this is a functional component to handle signing up a new user */
   const [addUser] = useMutation(ADD_USER);
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
@@ -15,12 +15,12 @@ const SignupForm = () => {
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event) => { /* handle input change */
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async (event) => { /* handle form submit */
     event.preventDefault();
 
     // check if form has everything (as per react-bootstrap docs)
@@ -30,26 +30,26 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
-    try {
+    try { /* try to add user */
       const {data} = await addUser({variables: {...userFormData}});
 
       const { token, user } = await data.addUser;
       console.log(user);
       Auth.login(token);
       
-    } catch (err) {
+    } catch (err) { /* if error */
       console.error(err);
       setShowAlert(true);
     }
 
-    setUserFormData({
+    setUserFormData({ /* reset form */
       username: '',
       email: '',
       password: '',
     });
   };
 
-  return (
+  return ( /* return the form */
     <>
       {/* This is needed for the validation functionality above */}
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>

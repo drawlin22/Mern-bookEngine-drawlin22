@@ -6,11 +6,11 @@ import LoginForm from './LoginForm';
 
 import Auth from '../utils/auth';
 
-const AppNavbar = () => {
+const AppNavbar = () => { 
   // set modal display state
   const [showModal, setShowModal] = useState(false);
 
-  return (
+  return ( /* return the navbar */
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>

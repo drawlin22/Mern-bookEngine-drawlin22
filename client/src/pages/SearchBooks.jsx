@@ -16,7 +16,7 @@ import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import { searchGoogleBooks } from '../utils/queries'
 
-const SearchBooks = () => {
+const SearchBooks = () => { /* this is a functional component */
   const [saveBook, { error }] = useMutation(SAVE_BOOK);
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -27,29 +27,29 @@ const SearchBooks = () => {
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
-  // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
-  useEffect(() => {
+  
+  useEffect(() => { /* use effect */
     return () => saveBookIds(savedBookIds);
   });
 
   // create method to search for books and set state on form submit
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async (event) => { /* handle form submit */
     event.preventDefault();
 
-    if (!searchInput) {
+    if (!searchInput) { /* if no search input */
       return false;
     }
 
-    try {
+    try { /* try to search books */
       const response = await searchGoogleBooks(searchInput);
 
-      if (!response.ok) {
+      if (!response.ok) { /* if no response */
         throw new Error('something went wrong!');
       }
 
       const { items } = await response.json();
 
-      const bookData = items.map((book) => ({
+      const bookData = items.map((book) => ({ /* map book data */
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
@@ -59,7 +59,7 @@ const SearchBooks = () => {
 
       setSearchedBooks(bookData);
       setSearchInput('');
-    } catch (err) {
+    } catch (err) { /* if error */
       console.error(err);
     }
   };
@@ -70,14 +70,14 @@ const SearchBooks = () => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
     // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    const token = Auth.loggedIn() ? Auth.getToken() : null; /* get token */
 
-    if (!token) {
+    if (!token) { /* if no token */
       return false;
     }
 
-    try {
-      const {data} = await saveBook({
+    try { /* try to save book */
+      const {data} = await saveBook({ /* save book */
         variables: { ...bookToSave },
       });
       console.log(data)
@@ -93,7 +93,7 @@ const SearchBooks = () => {
     }
   };
   
-  return (
+  return ( /* return the form */
     <>
       <div className="text-light bg-dark p-5">
         <Container>

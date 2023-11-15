@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@apollo/client';
 
 import { LOGIN_USER } from '../utils/mutations';
 
-const LoginForm = () => {
+const LoginForm = () => { /* this is a functional component */
   const [loginUser, { error }] = useMutation(LOGIN_USER);
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
@@ -30,15 +30,14 @@ const LoginForm = () => {
       event.stopPropagation();
     }
 
-    try {
+    try { /* try to login user */
       const {data} = await loginUser({variables:{...userFormData}});
 
-      if (!data) {
+      if (!data) { /* if no data */
         throw new Error('something went wrong!');
       }
 
-      // const { token, user } = data;
-      // console.log(user);
+     
       console.log(data)
       Auth.login(data.login.token);
     } catch (err) {
@@ -46,14 +45,14 @@ const LoginForm = () => {
       setShowAlert(true);
     }
 
-    setUserFormData({
+    setUserFormData({ /* reset form */
       username: '',
       email: '',
       password: '',
     });
   };
 
-  return (
+  return ( /* return the form */
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
