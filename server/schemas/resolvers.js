@@ -7,14 +7,24 @@ const {signToken} = require('../utils/auth');
 
 const resolvers = {
     Query: {
+        // me: async (parent, args, context, info) => {
+        //     // If there's a user in the context, return the data for that user
+        //     const currentUser = context.user;
+        //     if (!currentUser) {
+        //       throw new Error('Not authenticated');
+        //     }
+        //     return currentUser;
+        //   },
         me: async (parent, args, context, info) => {
-            // If there's a user in the context, return the data for that user
-            const currentUser = context.user;
-            if (!currentUser) {
-              throw new Error('Not authenticated');
-            }
-            return currentUser;
-          },
+          // If there's a user in the context, return the data for that user
+          console.log('yo', context.user);
+          const currentUser = context.user;
+          if (!currentUser) {
+            throw new Error('Not authenticated');
+          }
+          const userData = await User.findOne({ _id: context.user._id }).select('-__v -password');
+          return userData;
+        },
           users: async () => {
             // Fetch all users from the database
             return await User.find();
@@ -59,7 +69,7 @@ const resolvers = {
          },
        
         saveBook: async (parent, args, context) => {
-          console.log(context.user, "Resolver ")
+          // console.log(context.user, "Resolver ")
           const user = await User.findOneAndUpdate(
               {_id: context.user._id},
               {$addToSet: {savedBooks: args}},
@@ -67,13 +77,13 @@ const resolvers = {
           );
           return user;
       },
-      removeBook: async (parent, args) => {
+      removeBook: async (parent, args, context) => {
         const user = await User.findOneAndUpdate(
-            {username: args.username},
+          {_id: context.user._id},
             {$pull: {savedBooks: {bookId: args.bookId}}},
             {new: true}
         );
-        // return user;
+        return user;
           },
         },
      
